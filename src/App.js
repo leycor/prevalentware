@@ -1,8 +1,12 @@
 import React from 'react'
+import tw from 'twin.macro'
+
+const Title = tw.p`text-red-500`
 
 const App = () => {
   return(
-    <h1>Hola mundo</h1>
+    //<p>Hola mundo</p>
+    <Title>Hola mundo</Title>
   );
 }
 
