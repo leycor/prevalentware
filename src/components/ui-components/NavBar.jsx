@@ -73,9 +73,12 @@ const NavBar = () => {
     // Función que controla el menú responsivo
     const handleToggleResponsiveMenu = () => {
         setToggleState( !toggleState ? true : false)
-        console.log('Me estoy presionando')
     }
-    
+
+    // Ocultar menu responsive al presionar un link
+    const hiddeMenuResponsive = () => {
+        setToggleState(false)
+    }
 
     return (
         <>
@@ -83,7 +86,7 @@ const NavBar = () => {
                 <ColumnLeft>
                     {/* LOGO */}
                     <ContentCenter>
-                        <Link to='/' className='flex items-center'>
+                        <Link onClick={ hiddeMenuResponsive } to='/' className='flex items-center'>
                             <img src={navLogo} alt="navLogo" width='50' height='50'/>
                             <p>Gente PreValente</p>
                         </Link>
@@ -106,7 +109,7 @@ const NavBar = () => {
                 <ColumnRight>
                     <div className='hidden mdNav:flex items-center mr-10'>
                         <ImgItemMenu src={iconAdmin} alt='iconAdmin' />
-                        <Link to='/admin'>Administracion</Link>
+                        <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion</Link>
                     </div>
 
                     {/* Menu Superior desplegable <Empleo> */}
@@ -178,7 +181,7 @@ const NavBar = () => {
 
             <ContentItemResponsiveMenu>
                 <ImgItemMenu src={iconAdmin} alt='iconAdmin' />
-                <Link to='/admin'>Administracion</Link>
+                <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion</Link>
             </ContentItemResponsiveMenu>
             
             <ContentItemDropResponsiveMenu>
