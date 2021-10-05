@@ -4,12 +4,12 @@ import tw from 'twin.macro'
 
 // Img
 import navLogo from '../../assets/icons/navLogo.svg'
-import iconSearch from '../../assets/icons/icon-search.svg'
-import iconAdmin from '../../assets/icons/icon-admin.svg'
-import iconJob from '../../assets/icons/icon-job.svg'
-import iconCv from '../../assets/icons/icon-cv.svg'
+import iconSearch from '../../assets/icons/iconSearch.svg'
+import iconAdmin from '../../assets/icons/iconAdmin.svg'
+import iconJob from '../../assets/icons/iconJob.svg'
+import iconCv from '../../assets/icons/iconCv.svg'
 import iconUser from '../../assets/icons/iconUser.svg'
-import iconBurger from '../../assets/icons/icon-burger.svg'
+import iconBurger from '../../assets/icons/iconBurger.svg'
 import iconArrow from '../../assets/icons/iconArrow.svg'
 
 

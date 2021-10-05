@@ -10,14 +10,17 @@ module.exports = {
     },
     extend: {
       screens: {
-        'mdNav': '868px',
+        'mdNav': '870px',
       },
       margin:{
         '-Nmedium': '-100%',
       },
       
       colors: {
-        navColor: '#2F3337'
+        navColor: '#2F3337',
+        bodyColor: '#E5E7EB',
+        blackSecond: '#424242',
+        mainBlue: '#26B4FF'
       }
     },
     fontFamily: {
