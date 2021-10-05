@@ -15,26 +15,37 @@ import iconCardUsers from '../assets/icons/iconCardUsers.svg'
 const GridCard = tw.div`grid md:grid-cols-2 gap-4`
 
 // Helpers
+
+const ID_CARD_MENU = {
+    requestCompany: 'requestCompany',
+    indicators: 'indicators',
+    employees: 'employees',
+    managementUsers: 'managementUsers',
+}
 const cardMenu = [
     { 
+        id: ID_CARD_MENU.requestCompany,
         title:'Solicitudes de creacion de empresa',
         img: iconCardRequest,
         notify: 'Solicitudes a tratar',
         countNotify: 2,
     },
     { 
+        id: ID_CARD_MENU.indicators,
         title:'Indicadores',
         img: iconCardIndicators,
         notify: 'Visitado por ultima vez',
         countNotify: 2,
     },
     { 
+        id: ID_CARD_MENU.employees,
         title:'Inscripcion de empleados en empresas',
         img: iconCardEmployees,
         notify: 'Usuarios sin empresas',
         countNotify: 3
     },
     { 
+        id: ID_CARD_MENU.managementUsers,
         title:'Gestion de usuarios',
         img: iconCardUsers,
         notify: 'Activos en la plataforma',
@@ -49,8 +60,8 @@ const MainPage = () => {
         <ContentPage>
             <GridCard>
                 {
-                    cardMenu.map( ({title, img, notify, countNotify}) => (
-                        <Card key={title} title={title} img={img} notify={notify} countNotify={countNotify} />
+                    cardMenu.map( ({id,title, img, notify, countNotify}) => (
+                        <Card key={id} nameId={id} title={title} img={img} notify={notify} countNotify={countNotify} />
                     ) )
                 }
             </GridCard>
