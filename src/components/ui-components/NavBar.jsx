@@ -2,6 +2,10 @@
 import React from 'react'
 import tw from 'twin.macro'
 
+import {
+  Link
+} from "react-router-dom";
+
 // Img
 import navLogo from '../../assets/icons/navLogo.svg'
 import iconSearch from '../../assets/icons/iconSearch.svg'
@@ -79,8 +83,10 @@ const NavBar = () => {
                 <ColumnLeft>
                     {/* LOGO */}
                     <ContentCenter>
-                        <img src={navLogo} alt="navLogo" width='50' height='50'/>
-                        <p>Gente PreValente</p>
+                        <Link to='/' className='flex items-center'>
+                            <img src={navLogo} alt="navLogo" width='50' height='50'/>
+                            <p>Gente PreValente</p>
+                        </Link>
                     </ContentCenter>
 
                     {/* BUSCADOR */}
@@ -100,7 +106,7 @@ const NavBar = () => {
                 <ColumnRight>
                     <div className='hidden mdNav:flex items-center mr-10'>
                         <ImgItemMenu src={iconAdmin} alt='iconAdmin' />
-                        <a href="#aa">Administracion</a>
+                        <Link to='/admin'>Administracion</Link>
                     </div>
 
                     {/* Menu Superior desplegable <Empleo> */}
@@ -151,7 +157,7 @@ const NavBar = () => {
 
         {/* Menu Responsivo */}
         <div id='responsiveMenu' 
-        className={`z-40 fixed flex flex-col px-7 bg-navColor py-5 text-white font-medium text-sm border-gray-300 border-r h-screen w-64 duration-300 ${ !toggleState ? '-ml-Nmedium': null} mdNav:-ml-Nmedium`} >
+        className={`z-40 fixed flex flex-col px-7 bg-navColor py-5 text-white font-medium text-sm border-gray-300 border-r min-h-screen w-64 duration-300 ${ !toggleState ? '-ml-Nmedium': null} mdNav:-ml-Nmedium`} >
             <ContentItemDropResponsiveMenu>
                 <div className='flex items-center'>
                     <img className='mr-2' width='30' height='30'  src={iconUser} alt="iconProfile" />
@@ -172,7 +178,7 @@ const NavBar = () => {
 
             <ContentItemResponsiveMenu>
                 <ImgItemMenu src={iconAdmin} alt='iconAdmin' />
-                <a href="#aa">Administracion</a>
+                <Link to='/admin'>Administracion</Link>
             </ContentItemResponsiveMenu>
             
             <ContentItemDropResponsiveMenu>

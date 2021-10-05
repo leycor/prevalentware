@@ -10,6 +10,7 @@ import NavBar from './components/ui-components/NavBar';
 
 // Pages
 import MainPage from './pages/MainPage';
+import AdminPage from './pages/AdminPage';
 
 
 const MainRouter = () => {
@@ -19,8 +20,8 @@ const MainRouter = () => {
                 <NavBar />
                 <Switch>
                     <Route exact path='/'  component={ MainPage }></Route>
-                    {/* <Route strict path={ reactUrl }  component={ ReactPage }></Route>
-                    <Route strict path={ gitUrl }  component={ GitPage }></Route>
+                    <Route strict path='/admin'  component={ AdminPage }></Route>
+                    {/* <Route strict path={ gitUrl }  component={ GitPage }></Route>
 
                     <Route exact path='/not-found' component={ NotFound }></Route>
                     <Redirect to='/not-found'></Redirect> */}

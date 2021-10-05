@@ -5,13 +5,14 @@ module.exports = {
     screens: {
       sm: '480px',
       md: '768px',
+      mdNav: '870px',
       lg: '976px',
       xl: '1440px',
     },
     extend: {
-      screens: {
-        'mdNav': '870px',
-      },
+      // screens: {
+      //   'mdNav': '870px',
+      // },
       margin:{
         '-Nmedium': '-100%',
       },
