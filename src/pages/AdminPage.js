@@ -1,5 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import tw from 'twin.macro'
+
+// firebase
+import { collection, getDocs } from "firebase/firestore";
+import db from '../firebase/firebaseConfig';
 
 // ui components
 import ContentPage from '../components/ui-components/ContentPage'
@@ -24,8 +28,53 @@ const TitleContentCompany = tw.p`font-semibold ml-2 border-b pb-1 border-gray-40
 
 
 const AdminPage = () => {
+
+    const [companyState, setCompanyState] = React.useState([])
+    const [loaderCompany, setLoaderCompany] = React.useState(true)
+    const [paginator, setPaginator] = React.useState(0)
+
+    const handleClickPaginator = (e) => {
+
+        // Siguiente pagina
+        if(e.target.name === 'next'){
+            if(paginator === companyState.length - 1){
+                return
+            }
+            return setPaginator(paginator + 1)
+            
+        }
+
+        if(e.target.name === 'back'){
+            if(paginator === 0) return
+            return setPaginator(paginator - 1)
+        }
+    }
+
+    // Cargar todas las companias registradas
+    useEffect(() => {
+        const getData = async() => {
+            const data = await getDocs(collection(db, 'company'))
+            const refListData = []
+            data.forEach( (document) => {
+                refListData.push(document.data())
+                // setCompanyState([...companyState, document.data()])
+                // console.log(companyState.length)
+            } )
+            setCompanyState(refListData)
+            console.log(companyState)
+            setLoaderCompany(false)
+        }
+        getData();
+    },[])
     return (
         <>
+        {
+            loaderCompany 
+            ?
+            <ContentPage>
+                <p className='flex min-h-screen justify-center items-center text-mainBlue'>Cargando datos, por favor espere...</p>
+            </ContentPage>
+            : 
             <ContentPage>
                 <p className='mb-8'><span className='text-mainBlue'>Administracion</span> / Aprobacion de empresas</p>
 
@@ -54,27 +103,27 @@ const AdminPage = () => {
                             
                             <BoxContentCompany>
                                 <TitleCompany>Nombre de la empresa</TitleCompany>
-                                <TitleContentCompany>PREVELANTWARE</TitleContentCompany>
+                                <TitleContentCompany>{companyState[paginator].name}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <BoxContentCompany>
                                 <TitleCompany>Razon Social</TitleCompany>
-                                <TitleContentCompany>PREVALENTWARE S.A.S</TitleContentCompany>
+                                <TitleContentCompany>{companyState[paginator].businesName}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <BoxContentCompany>
                                 <TitleCompany>Tipo de Identificacion</TitleCompany>
-                                <TitleContentCompany>NIT</TitleContentCompany>
+                                <TitleContentCompany>{companyState[paginator].nit}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <BoxContentCompany>
                                 <TitleCompany>Identificacion</TitleCompany>
-                                <TitleContentCompany>901375150-4</TitleContentCompany>
+                                <TitleContentCompany>{companyState[paginator].id}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <BoxContentCompany>
                                 <TitleCompany># De empleados</TitleCompany>
-                                <TitleContentCompany>1-10</TitleContentCompany>
+                                <TitleContentCompany>{companyState[paginator].employees}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <div>
@@ -113,12 +162,19 @@ const AdminPage = () => {
 
                     {/* Paginator */}
                     <div className='order-first mdNav:order-last flex items-center justify-center mb-8'>
-                        <img src={iconArrowLeft} alt='iconArrowLeft' className='h-7 w-7' />
-                        <p className='px-2 text-xs mdNav:text-base'>Empresa 1 de 2 pendiente por Aprobacion</p>
-                        <img src={iconArrowRight} alt='iconArrowRight' className='h-7 w-7' />
+                        {
+                            paginator !== 0
+                            && <img onClick={ handleClickPaginator } name='back' src={iconArrowLeft} alt='iconArrowLeft' className='h-7 w-7 cursor-pointer' />
+                        }
+                        <p className='px-2 text-xs mdNav:text-base'>Empresa {paginator + 1 } de {companyState.length} pendiente por Aprobacion</p>
+                        {
+                            paginator !== companyState.length - 1
+                            && <img onClick={ handleClickPaginator } name='next' src={iconArrowRight} alt='iconArrowRight' className='h-7 w-7 cursor-pointer' />
+                        }
                     </div>
                 </GridAdminPage>
             </ContentPage>
+        }
         </>
     )
 }
