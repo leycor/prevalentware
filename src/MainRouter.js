@@ -52,7 +52,7 @@ const MainRouter = () => {
     },[change])
 
     return (
-        <Router basename='/prevalentware'>
+        <Router basename='/'>
             <>
                 <NavBar pendingCompany={ pendingCompany } />
                 <Switch>
