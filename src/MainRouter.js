@@ -57,10 +57,10 @@ const MainRouter = () => {
                 <NavBar pendingCompany={ pendingCompany } />
                 <Switch>
                     <Route exact path='/prevalentware'  component={ MainPage }></Route>
-                    <Route strict path='/prevalentware/admin'>
+                    <Route path='/prevalentware/admin'>
                         <AdminPage companyState={companyState} change={change}  setChange={setChange} />
                     </Route>
-                    <Route strict path='/prevalentware/create-company'>
+                    <Route path='/prevalentware/create-company'>
                         <CreateCompanyPage change={change} setChange={setChange} />
                     </Route>
                     {/* <Route strict path={ gitUrl }  component={ GitPage }></Route>
