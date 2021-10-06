@@ -56,8 +56,8 @@ const MainRouter = () => {
             <>
                 <NavBar pendingCompany={ pendingCompany } />
                 <Switch>
-                    <Route exact path='/'  component={ MainPage }></Route>
-                    <Route exact path='/admin'>
+                    <Route exact path='/admin'  component={ MainPage }></Route>
+                    <Route exact path='/'>
                         <AdminPage companyState={companyState} change={change}  setChange={setChange} />
                     </Route>
                     <Route path='/create-company'>
