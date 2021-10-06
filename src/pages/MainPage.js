@@ -29,7 +29,7 @@ const cardMenu = [
         img: iconCardRequest,
         notify: 'Solicitudes a tratar',
         countNotify: 2,
-        link:'/create-company'
+        link:'/prevalent/create-company'
     },
     { 
         id: ID_CARD_MENU.indicators,

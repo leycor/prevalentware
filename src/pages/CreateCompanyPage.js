@@ -145,7 +145,7 @@ const CreateCompanyPage = ({change, setChange}) => {
             setFormState(
                 { sid:0, name: '', businesName: '', nit: '', employees:0, pending: true, approved:false, rejected:false, logo:''}
                 )
-            history.push('/admin')
+            history.push('/prevalentware/admin')
             setChange(change + 1)
         } catch (e) {
             console.error("Error adding document: ", e);
