@@ -86,7 +86,7 @@ const NavBar = ({pendingCompany} ) => {
                 <ColumnLeft>
                     {/* LOGO */}
                     <ContentCenter>
-                        <Link onClick={ hiddeMenuResponsive } to='/prevalentware' className='flex items-center'>
+                        <Link onClick={ hiddeMenuResponsive } to='/' className='flex items-center'>
                             <img src={navLogo} alt="navLogo" width='50' height='50'/>
                             <p>Gente PreValente</p>
                         </Link>
@@ -109,7 +109,7 @@ const NavBar = ({pendingCompany} ) => {
                 <ColumnRight>
                     <div className='hidden mdNav:flex items-center mr-10'>
                         <ImgItemMenu src={iconAdmin} alt='iconAdmin' />
-                        <Link onClick={ hiddeMenuResponsive } to='/prevalentware/admin'>Administracion <span className='absolute ml-1 -mt-2 p-0.5 rounded-full bg-red-500 text-white text-xs'>{pendingCompany}</span></Link>
+                        <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion <span className='absolute ml-1 -mt-2 p-0.5 rounded-full bg-red-500 text-white text-xs'>{pendingCompany}</span></Link>
                     </div>
 
                     {/* Menu Superior desplegable <Empleo> */}
@@ -181,7 +181,7 @@ const NavBar = ({pendingCompany} ) => {
 
             <ContentItemResponsiveMenu>
                 <ImgItemMenu src={iconAdmin} alt='iconAdmin' />
-                <Link onClick={ hiddeMenuResponsive } to='/prevalentware/admin'>Administracion</Link>
+                <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion</Link>
             </ContentItemResponsiveMenu>
             
             <ContentItemDropResponsiveMenu>

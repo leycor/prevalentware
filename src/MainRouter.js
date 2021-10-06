@@ -52,15 +52,15 @@ const MainRouter = () => {
     },[change])
 
     return (
-        <Router basename='/'>
+        <Router basename='/prevalentware'>
             <>
                 <NavBar pendingCompany={ pendingCompany } />
                 <Switch>
-                    <Route exact path='/prevalentware'  component={ MainPage }></Route>
-                    <Route path='/prevalentware/admin'>
+                    <Route exact path='/'  component={ MainPage }></Route>
+                    <Route exact path='/admin'>
                         <AdminPage companyState={companyState} change={change}  setChange={setChange} />
                     </Route>
-                    <Route path='/prevalentware/create-company'>
+                    <Route path='/create-company'>
                         <CreateCompanyPage change={change} setChange={setChange} />
                     </Route>
                     {/* <Route strict path={ gitUrl }  component={ GitPage }></Route>
