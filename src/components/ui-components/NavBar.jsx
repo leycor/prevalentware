@@ -1,6 +1,7 @@
 // React
-import React from 'react'
+import React, { useEffect } from 'react'
 import tw from 'twin.macro'
+
 
 import {
   Link
@@ -34,7 +35,7 @@ const ContentItemDropResponsiveMenu = tw.div`flex flex-col mt-5`
 const ContentItemResponsiveMenu = tw.div`flex items-center mt-5`
 
 
-const NavBar = () => {
+const NavBar = ({pendingCompany} ) => {
 
     // Estado para ocultar menu responsivo
     const [toggleState, setToggleState] = React.useState(false)
@@ -79,6 +80,7 @@ const NavBar = () => {
     const hiddeMenuResponsive = () => {
         setToggleState(false)
     }
+    
 
     return (
         <>
@@ -109,7 +111,7 @@ const NavBar = () => {
                 <ColumnRight>
                     <div className='hidden mdNav:flex items-center mr-10'>
                         <ImgItemMenu src={iconAdmin} alt='iconAdmin' />
-                        <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion</Link>
+                        <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion <span className='absolute ml-1 -mt-2 p-0.5 rounded-full bg-red-500 text-white text-xs'>{pendingCompany}</span></Link>
                     </div>
 
                     {/* Menu Superior desplegable <Empleo> */}

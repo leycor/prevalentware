@@ -29,6 +29,7 @@ const cardMenu = [
         img: iconCardRequest,
         notify: 'Solicitudes a tratar',
         countNotify: 2,
+        link:'/create-company'
     },
     { 
         id: ID_CARD_MENU.indicators,
@@ -36,20 +37,23 @@ const cardMenu = [
         img: iconCardIndicators,
         notify: 'Visitado por ultima vez',
         countNotify: 2,
+        link:'/#'
     },
     { 
         id: ID_CARD_MENU.employees,
         title:'Inscripcion de empleados en empresas',
         img: iconCardEmployees,
         notify: 'Usuarios sin empresas',
-        countNotify: 3
+        countNotify: 3,
+        link:'/#'
     },
     { 
         id: ID_CARD_MENU.managementUsers,
         title:'Gestion de usuarios',
         img: iconCardUsers,
         notify: 'Activos en la plataforma',
-        countNotify: 532
+        countNotify: 532,
+        link:'/#'
     },
 ]
 
@@ -60,11 +64,12 @@ const MainPage = () => {
         <ContentPage>
             <GridCard>
                 {
-                    cardMenu.map( ({id,title, img, notify, countNotify}) => (
-                        <Card key={id} nameId={id} title={title} img={img} notify={notify} countNotify={countNotify} />
+                    cardMenu.map( ({id,title, img, notify, countNotify,link}) => (
+                        <Card key={id} nameId={id} title={title} img={img} notify={notify} countNotify={countNotify} link={link} />
                     ) )
                 }
             </GridCard>
+            
         </ContentPage>
     )
 }
