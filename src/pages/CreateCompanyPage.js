@@ -4,14 +4,13 @@ import { useHistory } from "react-router-dom";
 
 // Firebase
 import { collection, addDoc } from "firebase/firestore";
-import { db, storage } from '../firebase/firebaseConfig';
+import { db, } from '../firebase/firebaseConfig';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import tw from 'twin.macro'
 // img
 import iconClose from '../assets/icons/iconClose.svg'
 import ContentPage from '../components/ui-components/ContentPage'
-import { jsonEval } from '@firebase/util';
 
 const BoxInput = tw.div`flex flex-col`
 const LabelInput = tw.label`mb-1 text-sm`
@@ -30,7 +29,7 @@ const CreateCompanyPage = ({change, setChange}) => {
     const [error, setError] = React.useState('')
     const [loader, setLoader] = React.useState(false)
 
-    const { sid, name, businesName, nit, employees, logo, pending, approved, rejected} = formState
+    const { sid, name, businesName, nit, employees, pending, approved, rejected} = formState
 
     // Funcion que captura la data de los input
     const handleChangeInput = (e) => {
@@ -54,16 +53,16 @@ const CreateCompanyPage = ({change, setChange}) => {
         if(businesName === ''){
             return setError('El nombre de la razon social no puede estar vacio')
         }
-        if(businesName.length < 3){
-            return setError('El nombre de la razon social debe contener un minimo de 3 caracteres')
+        if(businesName.length < 2){
+            return setError('El nombre de la razon social debe contener un minimo de 2 caracteres')
         }
 
         // Validacion para nit
         if(nit === ''){
             return setError('El NIT no puede estar vacio')
         }
-        if(nit.length < 3){
-            return setError('El NIT debe contener un minimo de 3 caracteres')
+        if(nit.length < 2){
+            return setError('El NIT debe contener un minimo de 2 caracteres')
         }
 
         // Validacion para el ID

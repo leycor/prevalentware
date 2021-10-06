@@ -9,7 +9,6 @@ import { db } from '../firebase/firebaseConfig';
 import ContentPage from '../components/ui-components/ContentPage'
 
 // img
-import iconCompanyLogo from '../assets/icons/iconCompanyLogo.svg'
 import iconArrowLeft from '../assets/icons/iconArrowLeft.svg'
 import iconArrowRight from '../assets/icons/iconArrowRight.svg'
 import iconFile from '../assets/icons/iconFile.svg'
@@ -33,7 +32,6 @@ const AdminPage = ({companyState, change, setChange}) => {
 
     const [paginator, setPaginator] = React.useState(0)
     const [loader, setLoader] = React.useState(false)
-    const [img, setImg] = React.useState('')
     const [linkToken, setLinkToken] = React.useState('')
 
     // Funcion que actualiza el estado de una empresa
