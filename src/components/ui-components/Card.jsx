@@ -10,7 +10,7 @@ const Card = ({nameId, img, title, notify, countNotify}) => {
     // Funcion que detecta el menu con el que se va interactuar
     const handleOpenCard = (e) => {
         if(e.currentTarget.id === 'requestCompany')
-            return history.push('/prevalentware/create-company')
+            return history.push('/create-company')
 
         console.log(e.currentTarget.id)
     }
