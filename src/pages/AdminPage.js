@@ -19,7 +19,7 @@ import iconRejectCompany from '../assets/icons/iconRejectCompany.svg'
 
 // Style Components
 const GridAdminPage = tw.div`flex flex-col`
-const ButtonAdminPage1 = tw.button`flex items-center p-3 bg-white shadow-md rounded-md mb-4`
+const ButtonAdminPage1 = tw.button`flex items-center p-3 bg-white shadow-md rounded-md mb-4 hover:bg-gray-200`
 const ImgButtonAdminPage = tw.img`mr-2 w-6 h-6`
 const TextButtonAdminPage = tw.p`font-medium text-sm`
 const BoxContentCompany = tw.div`mb-8`
@@ -31,11 +31,13 @@ const AdminPage = ({companyState, change, setChange}) => {
     console.log('Ejecute componente AdminPAGE')    
 
     const [paginator, setPaginator] = React.useState(0)
+    const [loader, setLoader] = React.useState(false)
 
     // Funcion que actualiza el estado de una empresa
     const handleChangeState = async(e) => {
         console.log(e.currentTarget.id)
 
+        setLoader(true)
         if(e.currentTarget.id === 'approved'){
             console.log(companyState[paginator].key)
             const companyRef = doc(db, "company", `${companyState[paginator].key}`);
@@ -45,7 +47,7 @@ const AdminPage = ({companyState, change, setChange}) => {
             rejected: false,
             pending: false,
             });
-            setChange('Una empresa ha sido aprobada')
+            setChange(change + 1)
 
         } else if(e.currentTarget.id === 'rejected'){
             console.log(companyState[paginator].key)
@@ -56,8 +58,9 @@ const AdminPage = ({companyState, change, setChange}) => {
             rejected: true,
             pending: false,
             });
-            setChange('Una empresa ha sido rechazada')
+            setChange(change + 1)
         }
+        setLoader(false)
 
     }
 
@@ -93,6 +96,10 @@ const AdminPage = ({companyState, change, setChange}) => {
             : 
             <ContentPage>
                 <p className='mb-8'><span className='text-mainBlue'>Administracion</span> / Aprobacion de empresas</p>
+                {
+                    loader &&
+                    <p className='text-center mb-8 bg-white shadow-md p-5'>Actualizando Datos, por favor espere...</p>
+                }
 
                 {/* Company Data */}
                 <GridAdminPage>

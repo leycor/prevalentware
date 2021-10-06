@@ -96,7 +96,7 @@ const CreateCompanyPage = ({change, setChange}) => {
             console.log("Document written with ID: ", docRef.id);
             setFormState({sid:0, name: '', businesName: '', nit: '', employees:0 })
             history.push('/admin')
-            setChange('Una empresa ha enviado una solicitud')
+            setChange(change + 1)
         } catch (e) {
             console.error("Error adding document: ", e);
         }

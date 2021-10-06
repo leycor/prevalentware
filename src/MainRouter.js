@@ -24,7 +24,7 @@ const MainRouter = () => {
 
     const [pendingCompany, setPendingCompany] = React.useState(0)
     const [companyState, setCompanyState] = React.useState([])
-    const [change, setChange] = React.useState('')
+    const [change, setChange] = React.useState(1)
 
         useEffect((change) => {
             const getData = async() => {
