@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 // Firebase
 import { collection, addDoc } from "firebase/firestore";
-import db from '../firebase/firebaseConfig';
+import { db } from '../firebase/firebaseConfig';
 
 import tw from 'twin.macro'
 // img
@@ -16,18 +16,18 @@ const InputElement = tw.input`border border-gray-300 p-1 text-sm`
 
 // ui components
 
-const CreateCompanyPage = () => {
+const CreateCompanyPage = ({change, setChange}) => {
 
     const history = useHistory()
 
     
     const [formState, setFormState] = React.useState(
-        {id:0, name: '', businesName: '', nit: '', employees:0 }
+        { sid:0, name: '', businesName: '', nit: '', employees:0, pending: true, approved:false, rejected:false }
         )
     const [error, setError] = React.useState('')
     const [loader, setLoader] = React.useState(false)
 
-    const { id, name, businesName, nit, employees} = formState
+    const { sid, name, businesName, nit, employees} = formState
 
     // Funcion que captura la data de los input
     const handleChangeInput = (e) => {
@@ -62,14 +62,14 @@ const CreateCompanyPage = () => {
         }
 
         // Validacion para el ID
-        if(id === 0){
+        if(sid === 0){
             return setError('Es necesario establecer un id')
         }
-        if(id === ''){
+        if(sid === ''){
             return setError('Es necesario establecer un id')
         }
 
-        if(id === null || id === undefined){
+        if(sid === null || sid === undefined){
             return setError('El valor del ID es incorrecto')
         }
 
@@ -81,7 +81,7 @@ const CreateCompanyPage = () => {
             return setError('La empresa debe tener como minimo un empleado')
         }
 
-        if(id === null || id === undefined){
+        if(sid === null || sid === undefined){
             return setError('El valor de empleados es incorrecto')
         }
 
@@ -94,8 +94,9 @@ const CreateCompanyPage = () => {
             const docRef = await addDoc(collection(db, "company"),formState);
             docRef.id && setLoader(false)
             console.log("Document written with ID: ", docRef.id);
-            setFormState({id:0, name: '', businesName: '', nit: '', employees:0 })
+            setFormState({sid:0, name: '', businesName: '', nit: '', employees:0 })
             history.push('/admin')
+            setChange('Una empresa ha enviado una solicitud')
         } catch (e) {
             console.error("Error adding document: ", e);
         }
@@ -144,8 +145,8 @@ const CreateCompanyPage = () => {
                 <BoxInput>
                     <LabelInput>Identificacion </LabelInput>
                     <InputElement
-                    name='id'
-                    value={id} 
+                    name='sid'
+                    value={sid} 
                     onChange={ handleChangeInput } 
                     type='number'
                     placeholder='Nombre de la empresa' />
@@ -160,6 +161,15 @@ const CreateCompanyPage = () => {
                     type='number'
                     placeholder='Nombre de la empresa' />
                 </BoxInput>
+
+                <BoxInput>
+                    <LabelInput>Logo</LabelInput>
+                    <InputElement
+                    name='logo'
+                    type='file'
+                    placeholder='Nombre de la empresa' />
+                </BoxInput>
+
             </div>
             {
                 loader && <p className='text-center'>Enviado datos, por favor espere...</p>

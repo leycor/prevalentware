@@ -1,5 +1,5 @@
 // React
-import React, { useEffect } from 'react'
+import React from 'react'
 import tw from 'twin.macro'
 
 
@@ -49,7 +49,6 @@ const NavBar = ({pendingCompany} ) => {
 
     // Funcion que controla menu desplegable Responsive
     const handleDropMenuResponsive = (e) => {
-        console.log(e.target.id)
         if(e.target.id === 'dropJobMenuResponsive'){
             return setDropMenuResponsiveState({dropJobMenuResponsive: !dropJobMenuResponsive ? true : false, dropProfileMenuResponsive:false})
         }
@@ -61,7 +60,6 @@ const NavBar = ({pendingCompany} ) => {
 
     // Funcion que controla menu despegables
     const handleDropMenu = (e) => {
-        console.log(e.target.id)
         if(e.target.id === 'dropJobMenu'){
             return setDropMenuState({dropJobMenu: !dropJobMenu ? true : false, dropProfileMenu: false})
         }

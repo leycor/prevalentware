@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
 import tw from 'twin.macro'
+import React from 'react'
+
 
 // firebase
-import { collection, getDocs } from "firebase/firestore";
-import db from '../firebase/firebaseConfig';
-
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from '../firebase/firebaseConfig';
 // ui components
 import ContentPage from '../components/ui-components/ContentPage'
 
@@ -27,11 +27,39 @@ const TitleCompany = tw.p`text-xs text-gray-500 font-normal`
 const TitleContentCompany = tw.p`font-semibold ml-2 border-b pb-1 border-gray-400 uppercase`
 
 
-const AdminPage = () => {
+const AdminPage = ({companyState, change, setChange}) => {
+    console.log('Ejecute componente AdminPAGE')    
 
-    const [companyState, setCompanyState] = React.useState([])
-    const [loaderCompany, setLoaderCompany] = React.useState(true)
     const [paginator, setPaginator] = React.useState(0)
+
+    // Funcion que actualiza el estado de una empresa
+    const handleChangeState = async(e) => {
+        console.log(e.currentTarget.id)
+
+        if(e.currentTarget.id === 'approved'){
+            console.log(companyState[paginator].key)
+            const companyRef = doc(db, "company", `${companyState[paginator].key}`);
+
+            await updateDoc(companyRef, {
+            approved: true,
+            rejected: false,
+            pending: false,
+            });
+            setChange('Una empresa ha sido aprobada')
+
+        } else if(e.currentTarget.id === 'rejected'){
+            console.log(companyState[paginator].key)
+            const companyRef = doc(db, "company", `${companyState[paginator].key}`);
+
+            await updateDoc(companyRef, {
+            approved: false,
+            rejected: true,
+            pending: false,
+            });
+            setChange('Una empresa ha sido rechazada')
+        }
+
+    }
 
     const handleClickPaginator = (e) => {
 
@@ -50,26 +78,14 @@ const AdminPage = () => {
         }
     }
 
-    // Cargar todas las companias registradas
-    useEffect(() => {
-        const getData = async() => {
-            const data = await getDocs(collection(db, 'company'))
-            const refListData = []
-            data.forEach( (document) => {
-                refListData.push(document.data())
-                // setCompanyState([...companyState, document.data()])
-                // console.log(companyState.length)
-            } )
-            setCompanyState(refListData)
-            console.log(companyState)
-            setLoaderCompany(false)
-        }
-        getData();
-    },[])
+
+
+    
+
     return (
         <>
         {
-            loaderCompany 
+            companyState.length === 0
             ?
             <ContentPage>
                 <p className='flex min-h-screen justify-center items-center text-mainBlue'>Cargando datos, por favor espere...</p>
@@ -86,12 +102,12 @@ const AdminPage = () => {
                         <div className='flex justify-center mdNav:grid mdNav:grid-cols-3 '>
                             <img src={iconCompanyLogo} alt='companyLogo' className='col-start-2 bg-gray-300 p-10 mb-8' />
                             <div className='hidden mdNav:flex mdNav:flex-col '>
-                                <ButtonAdminPage1>
+                                <ButtonAdminPage1 onClick={handleChangeState} id='approved'>
                                     <ImgButtonAdminPage src={iconSuccesCompany} alt='iconSuccesCompany'/>
                                     <TextButtonAdminPage>Aprobar Empresa</TextButtonAdminPage>
                                 </ButtonAdminPage1>
 
-                                <ButtonAdminPage1>
+                                <ButtonAdminPage1 onClick={handleChangeState} id='rejected'>
                                     <ImgButtonAdminPage src={iconRejectCompany} alt='iconRejectCompany'/>
                                     <TextButtonAdminPage>Rechazar Empresa</TextButtonAdminPage>
                                 </ButtonAdminPage1>
@@ -101,6 +117,22 @@ const AdminPage = () => {
                         {/* Content */}
                         <div className='grid mdNav:grid-cols-2 gap-4'>
                             
+                            <BoxContentCompany>
+                                <TitleCompany>Estado</TitleCompany>
+                                {
+                                    companyState[paginator].pending
+                                    && <TitleContentCompany className='text-yellow-500'>Pendiente</TitleContentCompany>
+                                }
+                                {
+                                    companyState[paginator].approved
+                                    && <TitleContentCompany className='text-green-500'>Aprobado</TitleContentCompany>
+                                }
+                                {
+                                    companyState[paginator].rejected
+                                    && <TitleContentCompany className='text-red-500'>Rechazado</TitleContentCompany>
+                                }
+                            </BoxContentCompany>
+
                             <BoxContentCompany>
                                 <TitleCompany>Nombre de la empresa</TitleCompany>
                                 <TitleContentCompany>{companyState[paginator].name}</TitleContentCompany>
@@ -118,7 +150,7 @@ const AdminPage = () => {
 
                             <BoxContentCompany>
                                 <TitleCompany>Identificacion</TitleCompany>
-                                <TitleContentCompany>{companyState[paginator].id}</TitleContentCompany>
+                                <TitleContentCompany>{companyState[paginator].sid}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <BoxContentCompany>
@@ -127,7 +159,7 @@ const AdminPage = () => {
                             </BoxContentCompany>
 
                             <div>
-                                <div className='hidden mdNav:flex items-center p-3 bg-white shadow rounded-md w-2/3'>
+                                <div className='mb-10 sr-onlyhidden mdNav:flex items-center p-3 bg-white shadow rounded-md w-2/3'>
                                     <ImgButtonAdminPage src={iconUploadFile} alt='iconUploadFile'  />
                                     <TextButtonAdminPage>Ver archivos adjuntos</TextButtonAdminPage>
                                 </div>
@@ -149,12 +181,12 @@ const AdminPage = () => {
                     </div>
 
                     <div className='flex justify-center gap-2 mdNav:hidden '>
-                    <ButtonAdminPage1>
+                    <ButtonAdminPage1 onClick={handleChangeState} id='approved'>
                         <ImgButtonAdminPage src={iconSuccesCompany} alt='iconSuccesCompany'/>
                         <TextButtonAdminPage>Aprobar Empresa</TextButtonAdminPage>
                     </ButtonAdminPage1>
 
-                    <ButtonAdminPage1>
+                    <ButtonAdminPage1 onClick={handleChangeState} id='rejected'>
                         <ImgButtonAdminPage src={iconRejectCompany} alt='iconRejectCompany'/>
                         <TextButtonAdminPage>Rechazar Empresa</TextButtonAdminPage>
                     </ButtonAdminPage1>
