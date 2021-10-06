@@ -41,6 +41,7 @@ const MainRouter = () => {
                         pending: document.data().pending,
                         rejected: document.data().rejected,
                         sid: document.data().sid,
+                        logo: document.data().logo,
                 }
                 refListData.push(RefCompany)
             } )

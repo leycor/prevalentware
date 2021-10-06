@@ -1,14 +1,17 @@
 import React from 'react'
+import uniqid from 'uniqid'
 import { useHistory } from "react-router-dom";
 
 // Firebase
 import { collection, addDoc } from "firebase/firestore";
-import { db } from '../firebase/firebaseConfig';
+import { db, storage } from '../firebase/firebaseConfig';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import tw from 'twin.macro'
 // img
 import iconClose from '../assets/icons/iconClose.svg'
 import ContentPage from '../components/ui-components/ContentPage'
+import { jsonEval } from '@firebase/util';
 
 const BoxInput = tw.div`flex flex-col`
 const LabelInput = tw.label`mb-1 text-sm`
@@ -22,12 +25,12 @@ const CreateCompanyPage = ({change, setChange}) => {
 
     
     const [formState, setFormState] = React.useState(
-        { sid:0, name: '', businesName: '', nit: '', employees:0, pending: true, approved:false, rejected:false }
+        { sid:0, name: '', businesName: '', nit: '', employees:0, pending: true, approved:false, rejected:false, logo:''}
         )
     const [error, setError] = React.useState('')
     const [loader, setLoader] = React.useState(false)
 
-    const { sid, name, businesName, nit, employees} = formState
+    const { sid, name, businesName, nit, employees, logo, pending, approved, rejected} = formState
 
     // Funcion que captura la data de los input
     const handleChangeInput = (e) => {
@@ -36,8 +39,10 @@ const CreateCompanyPage = ({change, setChange}) => {
       }
 
     // Funcion que envia datos a firebase
-    const handleSubmitData = async() => {
-        // Validacion para nombre de empresa
+    const handleSubmitData = async(e) => {
+        e.preventDefault()
+        const file = e.target[5].files[0]
+
         if(name === ''){
             return setError('El nombre de la empresa no puede estar vacio')
         }
@@ -89,12 +94,58 @@ const CreateCompanyPage = ({change, setChange}) => {
             return setError('Espera, un archivo esta en proceso de registro')
         }
 
+        // if(file === undefined){
+        //     return setError('Es necesario que tu empresa tenga un loco, carga una imagen')
+        // }
+
+
+        // Funcion que carga la imagen a firebase
+        const uploadFiles = async(file, fileNewName) => {
+            const storage = getStorage();
+            const imageRef = ref(storage, 'images/' + fileNewName);
+            await uploadBytesResumable(imageRef, file, fileNewName )
+                .then((snapshot) => {
+                console.log(snapshot)
+                console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+                console.log('File metadata:', snapshot.metadata);
+                // Let's get a download URL for the file.
+                getDownloadURL(snapshot.ref).then((url) => {
+                    console.log('File available at', url);
+                });
+                }).catch((error) => {
+                console.error('Upload failed', error);
+                // ...
+                });
+        }
+
+        // Colocarle un nombbre unico al logo
+        const fileNewName = uniqid(`${file.name}-`)
+        console.log(fileNewName)
+        setLoader(true)
+
+        uploadFiles(file, fileNewName)
+        console.log('Termine de cargar la imagen')
+
+        const companyRef = {
+            sid: sid,
+            name: name,
+            businesName: businesName,
+            nit: nit,
+            employees: employees,
+            pending: pending,
+            approved: approved,
+            rejected: rejected,
+            logo: fileNewName,
+
+        }
+        console.log( companyRef )
         try {
-            setLoader(true)
-            const docRef = await addDoc(collection(db, "company"),formState);
+            const docRef = await addDoc(collection(db, "company"),companyRef);
             docRef.id && setLoader(false)
             console.log("Document written with ID: ", docRef.id);
-            setFormState({sid:0, name: '', businesName: '', nit: '', employees:0 })
+            setFormState(
+                { sid:0, name: '', businesName: '', nit: '', employees:0, pending: true, approved:false, rejected:false, logo:''}
+                )
             history.push('/admin')
             setChange(change + 1)
         } catch (e) {
@@ -105,7 +156,7 @@ const CreateCompanyPage = ({change, setChange}) => {
 
     return (
         <ContentPage>
-        <div className='px-10 flex flex-col bg-white shadow-md border border-gray-300'>
+        <form onSubmit={handleSubmitData} className='px-10 flex flex-col bg-white shadow-md border border-gray-300'>
             <div className='flex justify-between mb-8'>
                 <p className='mx-auto pt-5'>Enviar solicitud</p>
                 <img src={iconClose} alt='iconClose' className='mt-3  w-3 h-3 cursor-pointer' />
@@ -165,17 +216,17 @@ const CreateCompanyPage = ({change, setChange}) => {
                 <BoxInput>
                     <LabelInput>Logo</LabelInput>
                     <InputElement
-                    name='logo'
                     type='file'
-                    placeholder='Nombre de la empresa' />
+                    placeholder='Logo de la empresa' />
                 </BoxInput>
 
             </div>
             {
                 loader && <p className='text-center'>Enviado datos, por favor espere...</p>
             }
-            <button onClick={handleSubmitData} className='mt-6 mb-8 bg-mainBlue cursor-pointer hover:bg-blue-500 p-3 font-medium text-center text-white'>Enviar Registro</button>
-        </div>
+            <button type='submit' className='mt-6 mb-8 bg-mainBlue cursor-pointer hover:bg-blue-500 p-3 font-medium text-center text-white'>Enviar Registro</button>
+            <button>Test</button>
+        </form>
         {
             error !== '' &&
             <p className='text-red-600 text-center mt-8'>{error}</p>

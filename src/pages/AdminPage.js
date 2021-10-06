@@ -16,6 +16,7 @@ import iconFile from '../assets/icons/iconFile.svg'
 import iconUploadFile from '../assets/icons/iconUploadFile.svg'
 import iconSuccesCompany from '../assets/icons/iconSuccesCompany.svg'
 import iconRejectCompany from '../assets/icons/iconRejectCompany.svg'
+import { useEffect } from 'react/cjs/react.development';
 
 // Style Components
 const GridAdminPage = tw.div`flex flex-col`
@@ -32,6 +33,8 @@ const AdminPage = ({companyState, change, setChange}) => {
 
     const [paginator, setPaginator] = React.useState(0)
     const [loader, setLoader] = React.useState(false)
+    const [img, setImg] = React.useState('')
+    const [linkToken, setLinkToken] = React.useState('')
 
     // Funcion que actualiza el estado de una empresa
     const handleChangeState = async(e) => {
@@ -81,6 +84,23 @@ const AdminPage = ({companyState, change, setChange}) => {
         }
     }
 
+    useEffect(() => {
+        console.log(companyState)
+        const getImagen = async () => {
+            const imgName = companyState[paginator].logo
+            try {
+                const resp = await fetch(`https://firebasestorage.googleapis.com/v0/b/prevalentware-47cb7.appspot.com/o/images%2F${imgName}`);
+                const data = await resp.json();
+                setLinkToken(data.downloadTokens)
+        
+            } catch (error) {
+                //Manejo de error
+            }
+        }
+        companyState.length > 0 && getImagen()
+
+    }, [])
+
 
 
     
@@ -107,7 +127,11 @@ const AdminPage = ({companyState, change, setChange}) => {
                         
                         {/* Logo and Button */}
                         <div className='flex justify-center mdNav:grid mdNav:grid-cols-3 '>
-                            <img src={iconCompanyLogo} alt='companyLogo' className='col-start-2 bg-gray-300 p-10 mb-8' />
+                            <img 
+                            src={`https://firebasestorage.googleapis.com/v0/b/prevalentware-47cb7.appspot.com/o/images%2F${companyState[paginator].logo}?alt=media&token=${linkToken}`} 
+                            alt='companyLogo' 
+                            className='col-start-2 bg-gray-300 p-10 mb-8'
+                             />
                             <div className='hidden mdNav:flex mdNav:flex-col '>
                                 <ButtonAdminPage1 onClick={handleChangeState} id='approved'>
                                     <ImgButtonAdminPage src={iconSuccesCompany} alt='iconSuccesCompany'/>
