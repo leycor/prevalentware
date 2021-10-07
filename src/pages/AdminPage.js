@@ -26,15 +26,13 @@ const TitleCompany = tw.p`text-xs text-gray-500 font-normal`
 const TitleContentCompany = tw.p`font-semibold ml-2 border-b pb-1 border-gray-400 uppercase`
 
 
-const AdminPage = ({listCompanyState, change, setChange}) => {
-    console.log('Ejecute componente AdminPAGE')    
+const AdminPage = ({listCompanyState, change, setChange}) => {   
 
     const [paginator, setPaginator] = React.useState(0)
     const [loader, setLoader] = React.useState(false)
     const [modal, setModal] = React.useState(false)
 
     const handleClickModal = () => {
-        console.log('Muestrame el modal')
         setModal(true)
     }
 
@@ -44,11 +42,9 @@ const AdminPage = ({listCompanyState, change, setChange}) => {
 
     // Funcion que actualiza el estado de una empresa
     const handleChangeState = async(e) => {
-        console.log(e.currentTarget.id)
 
         setLoader(true) // Agrega un loader al momento de updatear el dato
         if(e.currentTarget.id === 'approved'){
-            console.log(listCompanyState[paginator].key)
             const companyRef = doc(db, "company", `${listCompanyState[paginator].key}`);
 
             await updateDoc(companyRef, {
@@ -59,7 +55,6 @@ const AdminPage = ({listCompanyState, change, setChange}) => {
             setChange(change + 1)
 
         } else if(e.currentTarget.id === 'rejected'){
-            console.log(listCompanyState[paginator].key)
             const companyRef = doc(db, "company", `${listCompanyState[paginator].key}`);
 
             await updateDoc(companyRef, {

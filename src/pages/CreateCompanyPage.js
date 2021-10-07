@@ -19,7 +19,6 @@ const InputElement = tw.input`border border-gray-300 p-1 text-sm`
 // ui components
 
 const CreateCompanyPage = ({change, setChange}) => {
-    console.log('Ejecutando createCompanyPage')
 
     const history = useHistory()
 
@@ -44,7 +43,6 @@ const CreateCompanyPage = ({change, setChange}) => {
 
     // Funcion que captura la data de los input
     const handleChangeInput = (e) => {
-        console.log(e.target.value)
         setFormState({...formState, [e.target.name]: e.target.value})
       }
 

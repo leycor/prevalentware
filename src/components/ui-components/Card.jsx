@@ -12,7 +12,6 @@ const Card = ({nameId, img, title, notify, countNotify}) => {
         if(e.currentTarget.id === 'requestCompany')
             return history.push('/create-company')
 
-        console.log(e.currentTarget.id)
     }
 
     return (

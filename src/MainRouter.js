@@ -20,7 +20,6 @@ import CreateCompanyPage from './pages/CreateCompanyPage';
 
 
 const MainRouter = () => {
-    console.log('Ejecutanto Main router')
 
     const [listCompanyState, setListCompanyState] = React.useState([])
     const [change, setChange] = React.useState(1)
@@ -46,7 +45,6 @@ const MainRouter = () => {
                 refListCompany.push(refCompany)
             })
             setListCompanyState(refListCompany)
-            console.log(listCompanyState)
         }
         getDataFirebase()
     }, [change])
