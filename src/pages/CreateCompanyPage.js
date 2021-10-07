@@ -79,9 +79,7 @@ const CreateCompanyPage = ({change, setChange}) => {
         // Evita que se carguen datos al momento de estar enviando los datos de una compania
         if(loader){ return setError('Espera, un archivo esta en proceso de registro') }
 
-        // if(file === undefined){
-        //     return setError('Es necesario que tu empresa tenga un loco, carga una imagen')
-        // }
+        if(file === undefined){ return setError('Es necesario que tu empresa tenga un loco, carga una imagen')}
 
 
         // Funcion que carga la imagen a firebase
