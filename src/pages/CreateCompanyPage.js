@@ -199,7 +199,6 @@ const CreateCompanyPage = ({change, setChange}) => {
                 loader && <p className='text-center'>Enviado datos, por favor espere...</p>
             }
             <button type='submit' className='mt-6 mb-8 bg-mainBlue cursor-pointer hover:bg-blue-500 p-3 font-medium text-center text-white'>Enviar Registro</button>
-            <button>Test</button>
         </form>
         {
             error !== '' &&
