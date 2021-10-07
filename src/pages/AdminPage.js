@@ -15,7 +15,6 @@ import iconFile from '../assets/icons/iconFile.svg'
 import iconUploadFile from '../assets/icons/iconUploadFile.svg'
 import iconSuccesCompany from '../assets/icons/iconSuccesCompany.svg'
 import iconRejectCompany from '../assets/icons/iconRejectCompany.svg'
-import { useEffect } from 'react/cjs/react.development';
 
 // Style Components
 const GridAdminPage = tw.div`flex flex-col`
@@ -32,7 +31,6 @@ const AdminPage = ({listCompanyState, change, setChange}) => {
 
     const [paginator, setPaginator] = React.useState(0)
     const [loader, setLoader] = React.useState(false)
-    const [linkToken, setLinkToken] = React.useState('')
 
     // Funcion que actualiza el estado de una empresa
     const handleChangeState = async(e) => {
