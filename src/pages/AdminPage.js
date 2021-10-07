@@ -15,6 +15,7 @@ import iconFile from '../assets/icons/iconFile.svg'
 import iconUploadFile from '../assets/icons/iconUploadFile.svg'
 import iconSuccesCompany from '../assets/icons/iconSuccesCompany.svg'
 import iconRejectCompany from '../assets/icons/iconRejectCompany.svg'
+import logoPrevalentWare from '../assets/img/logoPewvalet.png'
 
 // Style Components
 const GridAdminPage = tw.div`flex flex-col`
@@ -24,6 +25,14 @@ const TextButtonAdminPage = tw.p`font-medium text-sm`
 const BoxContentCompany = tw.div`mb-8`
 const TitleCompany = tw.p`text-xs text-gray-500 font-normal`
 const TitleContentCompany = tw.p`font-semibold ml-2 border-b pb-1 border-gray-400 uppercase`
+
+const documentModal = [
+    {id:1, name:'RUT PrevlalentWare', file:logoPrevalentWare},
+    {id:2, name:'Logo PrevlalentWare', file:logoPrevalentWare},
+    {id:3, name:'Acta de constitución PrevlalentWare', file:logoPrevalentWare},
+    {id:4, name:'Cámara de Comercio Prevalentware', file:logoPrevalentWare},
+    {id:5, name:'Otro Documento  Prevalentware', file:logoPrevalentWare},
+]
 
 
 const AdminPage = ({listCompanyState, change, setChange}) => {   
@@ -172,23 +181,26 @@ const AdminPage = ({listCompanyState, change, setChange}) => {
                             </BoxContentCompany>
 
                             <div>
-                                <div onClick={handleClickModal} className='mb-10 cursor-pointer  mdNav:flex items-center p-3 bg-white shadow rounded-md w-2/3'>
+                                <div onClick={handleClickModal} className='mb-10 cursor-pointer hidden  mdNav:flex items-center p-3 bg-white shadow rounded-md w-2/3'>
                                     <ImgButtonAdminPage src={iconUploadFile} alt='iconUploadFile'  />
                                     <TextButtonAdminPage >Ver archivos adjuntos</TextButtonAdminPage>
                                 </div>
                             </div>
 
                             {/* Mostrar documentos para Moviles */}
+
                             <div className='mb-10 mdNav:hidden'>
-                                <p className='mb-8'>Documentos Cargados</p>
-                                <div className='flex justify-between items-center mb-8'>
-                                    <p>RUT PrevalentWare</p>
-                                    <img src={iconFile} alt="iconFile" />
-                                </div>
-                                <div className='flex justify-between items-center mb-8'>
-                                    <p>RUT PrevalentWare</p>
-                                    <img src={iconFile} alt="iconFile" />
-                                </div>
+                             {
+                                documentModal.map( document => (
+                                    <div className='flex justify-between mb-5' key={document.id}>
+                                        <p className='pr-5'>{document.name}</p>
+                                        <a href={document.file} download name='mundo'>
+                                            <img className='h-8 w-8 hover:scale-50 cursor-pointer' src={iconFile} alt='Nombre de documento'></img>
+                                            <p className='text-xs truncate w-10'>{document.name}</p>
+                                        </a>
+                                    </div>
+                                ))
+                            }
                             </div>
                         </div>
                     </div>
@@ -218,20 +230,26 @@ const AdminPage = ({listCompanyState, change, setChange}) => {
                         }
                     </div>
                 </GridAdminPage>
+
+                {/* Modal de de archivos para descargar */}
                 {
                     modal &&
-                    <div className='hidden mdNav:flex mdNav:flex-col px-10 py-10 bg-white border border-gray-200 shadow-md rounded-lg absolute m-auto inset-0 w-1/3 h-2/4'>
-                        <div className='flex justify-between'>
-                            <p className='text-center'>Documentos cargados</p>
-                            <p onClick={handleCloseModal} className='cursor-pointer'>X</p>
-                        </div>
-                        <div className='mt-8 flex items-center justify-center'>
-                            <p className='mr-10'>Nombre del documento</p>
-                            <img className='h-8 w-8' src={iconFile} alt='Nombre de documento'></img>
-                        </div>
-                        <div className='mt-8 flex items-center justify-center'>
-                            <p className='mr-10'>Nombre del documento</p>
-                            <img className='h-8 w-8' src={iconFile} alt='Nombre de documento'></img>
+                    <div className='hidden mdNav:flex mdNav:flex-col bg-white border border-gray-200 shadow-md rounded-lg absolute m-auto inset-0 w-1/3 h-2/4'>
+                        <p onClick={handleCloseModal} className='ml-auto mr-4 mt-3 cursor-pointer'>X</p>
+                        <p className='text-center text-2xl font-medium'>Documentos cargados</p>
+
+                        <div className='mt-8 grid grid-cols gap-4 px-10 overflow-scroll'>
+                            {
+                                documentModal.map( document => (
+                                    <div className='flex justify-between' key={document.id}>
+                                        <p className='pr-5'>{document.name}</p>
+                                        <a href={document.file} download name='mundo'>
+                                            <img className='h-8 w-8 hover:scale-50 cursor-pointer' src={iconFile} alt='Nombre de documento'></img>
+                                            <p className='text-xs truncate w-10'>{document.name}</p>
+                                        </a>
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
                 }

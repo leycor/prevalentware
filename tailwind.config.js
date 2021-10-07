@@ -10,9 +10,9 @@ module.exports = {
       xl: '1440px',
     },
     extend: {
-      // screens: {
-      //   'mdNav': '870px',
-      // },
+       fontSize: {
+         'xxs': '0.65rem',
+       },
       margin:{
         '-Nmedium': '-100%',
       },

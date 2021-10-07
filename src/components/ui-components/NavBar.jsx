@@ -109,7 +109,7 @@ const NavBar = ({countCompany} ) => {
                 <ColumnRight>
                     <div className='hidden mdNav:flex items-center mr-10'>
                         <ImgItemMenu src={iconAdmin} alt='iconAdmin' />
-                        <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion <span className='absolute ml-1 -mt-2 p-0.5 rounded-full bg-red-500 text-white text-xs'>{countCompany}</span></Link>
+                        <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion <span className='w-4 h-4 absolute pl-1.5 -mt-2 rounded-full bg-red-500 text-white text-xxs'>{countCompany}</span></Link>
                     </div>
 
                     {/* Menu Superior desplegable <Empleo> */}
