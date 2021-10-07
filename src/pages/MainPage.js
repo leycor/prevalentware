@@ -14,6 +14,8 @@ import iconCardUsers from '../assets/icons/iconCardUsers.svg'
 // Style Components
 const GridCard = tw.div`grid md:grid-cols-2 gap-4`
 
+const now = new Date()
+
 // Helpers
 
 const ID_CARD_MENU = {
@@ -35,7 +37,7 @@ const cardMenu = [
         id: ID_CARD_MENU.indicators,
         title:'Indicadores',
         img: iconCardIndicators,
-        notify: 'Visitado por ultima vez',
+        notify: `Visitado por ultima vez: ${now.getDate()}/${now.getMonth()}/${now.getFullYear()}`,
         countNotify: 2,
         link:'/#'
     },
