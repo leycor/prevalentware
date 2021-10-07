@@ -27,7 +27,7 @@ const TitleCompany = tw.p`text-xs text-gray-500 font-normal`
 const TitleContentCompany = tw.p`font-semibold ml-2 border-b pb-1 border-gray-400 uppercase`
 
 
-const AdminPage = ({companyState, change, setChange}) => {
+const AdminPage = ({listCompanyState, change, setChange}) => {
     console.log('Ejecute componente AdminPAGE')    
 
     const [paginator, setPaginator] = React.useState(0)
@@ -38,10 +38,10 @@ const AdminPage = ({companyState, change, setChange}) => {
     const handleChangeState = async(e) => {
         console.log(e.currentTarget.id)
 
-        setLoader(true)
+        setLoader(true) // Agrega un loader al momento de updatear el dato
         if(e.currentTarget.id === 'approved'){
-            console.log(companyState[paginator].key)
-            const companyRef = doc(db, "company", `${companyState[paginator].key}`);
+            console.log(listCompanyState[paginator].key)
+            const companyRef = doc(db, "company", `${listCompanyState[paginator].key}`);
 
             await updateDoc(companyRef, {
             approved: true,
@@ -51,8 +51,8 @@ const AdminPage = ({companyState, change, setChange}) => {
             setChange(change + 1)
 
         } else if(e.currentTarget.id === 'rejected'){
-            console.log(companyState[paginator].key)
-            const companyRef = doc(db, "company", `${companyState[paginator].key}`);
+            console.log(listCompanyState[paginator].key)
+            const companyRef = doc(db, "company", `${listCompanyState[paginator].key}`);
 
             await updateDoc(companyRef, {
             approved: false,
@@ -65,48 +65,29 @@ const AdminPage = ({companyState, change, setChange}) => {
 
     }
 
+    // Funcion que controla el paginado de las companias
     const handleClickPaginator = (e) => {
 
-        // Siguiente pagina
+        // Pagina siguiente
         if(e.target.name === 'next'){
-            if(paginator === companyState.length - 1){
+            if(paginator === listCompanyState.length - 1){
                 return
             }
-            return setPaginator(paginator + 1)
-            
+            return setPaginator(paginator + 1)  
         }
 
+        // Pagina anterior
         if(e.target.name === 'back'){
             if(paginator === 0) return
             return setPaginator(paginator - 1)
         }
     }
-
-    useEffect(() => {
-        console.log(companyState)
-        const getImagen = async () => {
-            const imgName = companyState[paginator].logo
-            try {
-                const resp = await fetch(`https://firebasestorage.googleapis.com/v0/b/prevalentware-47cb7.appspot.com/o/images%2F${imgName}`);
-                const data = await resp.json();
-                setLinkToken(data.downloadTokens)
-        
-            } catch (error) {
-                //Manejo de error
-            }
-        }
-        companyState.length > 0 && getImagen()
-
-    }, [])
-
-
-
     
 
     return (
         <>
         {
-            companyState.length === 0
+            listCompanyState.length === 0
             ?
             <ContentPage>
                 <p className='flex min-h-screen justify-center items-center text-mainBlue'>Cargando datos, por favor espere...</p>
@@ -125,8 +106,8 @@ const AdminPage = ({companyState, change, setChange}) => {
                         
                         {/* Logo and Button */}
                         <div className='flex justify-center mdNav:grid mdNav:grid-cols-3 '>
-                            <img 
-                            src={`https://firebasestorage.googleapis.com/v0/b/prevalentware-47cb7.appspot.com/o/images%2F${companyState[paginator].logo}?alt=media&token=${linkToken}`} 
+                            <img
+                            src={ listCompanyState[paginator].logo } 
                             alt='companyLogo' 
                             className='col-start-2 bg-gray-300 p-10 mb-8'
                              />
@@ -149,42 +130,42 @@ const AdminPage = ({companyState, change, setChange}) => {
                             <BoxContentCompany>
                                 <TitleCompany>Estado</TitleCompany>
                                 {
-                                    companyState[paginator].pending
+                                    listCompanyState[paginator].pending
                                     && <TitleContentCompany className='text-yellow-500'>Pendiente</TitleContentCompany>
                                 }
                                 {
-                                    companyState[paginator].approved
+                                    listCompanyState[paginator].approved
                                     && <TitleContentCompany className='text-green-500'>Aprobado</TitleContentCompany>
                                 }
                                 {
-                                    companyState[paginator].rejected
+                                    listCompanyState[paginator].rejected
                                     && <TitleContentCompany className='text-red-500'>Rechazado</TitleContentCompany>
                                 }
                             </BoxContentCompany>
 
                             <BoxContentCompany>
                                 <TitleCompany>Nombre de la empresa</TitleCompany>
-                                <TitleContentCompany>{companyState[paginator].name}</TitleContentCompany>
+                                <TitleContentCompany>{listCompanyState[paginator].name}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <BoxContentCompany>
                                 <TitleCompany>Razon Social</TitleCompany>
-                                <TitleContentCompany>{companyState[paginator].businesName}</TitleContentCompany>
+                                <TitleContentCompany>{listCompanyState[paginator].businesName}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <BoxContentCompany>
                                 <TitleCompany>Tipo de Identificacion</TitleCompany>
-                                <TitleContentCompany>{companyState[paginator].nit}</TitleContentCompany>
+                                <TitleContentCompany>{listCompanyState[paginator].nit}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <BoxContentCompany>
                                 <TitleCompany>Identificacion</TitleCompany>
-                                <TitleContentCompany>{companyState[paginator].sid}</TitleContentCompany>
+                                <TitleContentCompany>{listCompanyState[paginator].sid}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <BoxContentCompany>
                                 <TitleCompany># De empleados</TitleCompany>
-                                <TitleContentCompany>{companyState[paginator].employees}</TitleContentCompany>
+                                <TitleContentCompany>{listCompanyState[paginator].employees}</TitleContentCompany>
                             </BoxContentCompany>
 
                             <div>
@@ -227,9 +208,9 @@ const AdminPage = ({companyState, change, setChange}) => {
                             paginator !== 0
                             && <img onClick={ handleClickPaginator } name='back' src={iconArrowLeft} alt='iconArrowLeft' className='h-7 w-7 cursor-pointer' />
                         }
-                        <p className='px-2 text-xs mdNav:text-base'>Empresa {paginator + 1 } de {companyState.length} pendiente por Aprobacion</p>
+                        <p className='px-2 text-xs mdNav:text-base'>Empresa {paginator + 1 } de {listCompanyState.length} pendiente por Aprobacion</p>
                         {
-                            paginator !== companyState.length - 1
+                            paginator !== listCompanyState.length - 1
                             && <img onClick={ handleClickPaginator } name='next' src={iconArrowRight} alt='iconArrowRight' className='h-7 w-7 cursor-pointer' />
                         }
                     </div>

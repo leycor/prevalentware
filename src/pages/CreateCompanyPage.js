@@ -19,17 +19,28 @@ const InputElement = tw.input`border border-gray-300 p-1 text-sm`
 // ui components
 
 const CreateCompanyPage = ({change, setChange}) => {
+    console.log('Ejecutando createCompanyPage')
 
     const history = useHistory()
 
-    
     const [formState, setFormState] = React.useState(
-        { sid:0, name: '', businesName: '', nit: '', employees:0, pending: true, approved:false, rejected:false, logo:''}
+        { 
+            sid:0, 
+            name: '', 
+            businesName: '', 
+            nit: '', 
+            employees:0, 
+            pending: true, 
+            approved:false, 
+            rejected:false, 
+            logo:''
+        }
         )
+    const { sid, name, businesName, nit, employees, pending, approved, rejected} = formState
+
     const [error, setError] = React.useState('')
     const [loader, setLoader] = React.useState(false)
 
-    const { sid, name, businesName, nit, employees, pending, approved, rejected} = formState
 
     // Funcion que captura la data de los input
     const handleChangeInput = (e) => {
@@ -38,60 +49,35 @@ const CreateCompanyPage = ({change, setChange}) => {
       }
 
     // Funcion que envia datos a firebase
-    const handleSubmitData = async(e) => {
+    const handleSubmitData = (e) => {
         e.preventDefault()
         const file = e.target[5].files[0]
 
-        if(name === ''){
-            return setError('El nombre de la empresa no puede estar vacio')
-        }
-        if(name.length < 3){
-            return setError('El nombre de la empresa debe contener un minimo de 3 caracteres')
-        }
+        // Validacion de nombre de la empresa
+        if(name === ''){ return setError('El nombre de la empresa no puede estar vacio')}
+        if(name.length < 3){return setError('El nombre de la empresa debe contener un minimo de 3 caracteres')}
 
         // Validacion para razon social
-        if(businesName === ''){
-            return setError('El nombre de la razon social no puede estar vacio')
-        }
-        if(businesName.length < 2){
-            return setError('El nombre de la razon social debe contener un minimo de 2 caracteres')
-        }
+        if(businesName === ''){ return setError('El nombre de la razon social no puede estar vacio')}
+        if(businesName.length < 2){return setError('El nombre de la razon social debe contener un minimo de 2 caracteres')}
 
         // Validacion para nit
-        if(nit === ''){
-            return setError('El NIT no puede estar vacio')
-        }
-        if(nit.length < 2){
-            return setError('El NIT debe contener un minimo de 2 caracteres')
-        }
+        if(nit === ''){ return setError('El NIT no puede estar vacio')}
+        if(nit.length < 2){ return setError('El NIT debe contener un minimo de 2 caracteres')}
 
         // Validacion para el ID
-        if(sid === 0){
-            return setError('Es necesario establecer un id')
-        }
-        if(sid === ''){
-            return setError('Es necesario establecer un id')
-        }
-
-        if(sid === null || sid === undefined){
-            return setError('El valor del ID es incorrecto')
-        }
+        if(sid === 0){ return setError('Es necesario establecer un id') }
+        if(sid === ''){ return setError('Es necesario establecer un id')}
+        if(sid === null || sid === undefined){ return setError('El valor del ID es incorrecto')}
 
         // Validacion para el empleados
-        if(employees === 0){
-            return setError('La empresa debe tener como minimo un empleado')
-        }
-        if(employees === ''){
-            return setError('La empresa debe tener como minimo un empleado')
-        }
+        if(employees === 0){ return setError('La empresa debe tener como minimo un empleado')}
+        if(employees === ''){return setError('La empresa debe tener como minimo un empleado')}
 
-        if(sid === null || sid === undefined){
-            return setError('El valor de empleados es incorrecto')
-        }
+        if(sid === null || sid === undefined){ return setError('El valor de empleados es incorrecto')}
 
-        if(loader){
-            return setError('Espera, un archivo esta en proceso de registro')
-        }
+        // Evita que se carguen datos al momento de estar enviando los datos de una compania
+        if(loader){ return setError('Espera, un archivo esta en proceso de registro') }
 
         // if(file === undefined){
         //     return setError('Es necesario que tu empresa tenga un loco, carga una imagen')
@@ -99,57 +85,50 @@ const CreateCompanyPage = ({change, setChange}) => {
 
 
         // Funcion que carga la imagen a firebase
-        const uploadFiles = async(file, fileNewName) => {
+
+        const test = async(file, fileNewName) => {
+        
             const storage = getStorage();
             const imageRef = ref(storage, 'images/' + fileNewName);
-            await uploadBytesResumable(imageRef, file, fileNewName )
-                .then((snapshot) => {
-                console.log(snapshot)
-                console.log('Uploaded', snapshot.totalBytes, 'bytes.');
-                console.log('File metadata:', snapshot.metadata);
-                // Let's get a download URL for the file.
-                getDownloadURL(snapshot.ref).then((url) => {
-                    console.log('File available at', url);
-                });
-                }).catch((error) => {
-                console.error('Upload failed', error);
-                // ...
-                });
+
+            const refUploadImage = await uploadBytesResumable(imageRef, file, file.metadata)
+            const refGetImage = await getDownloadURL(imageRef)
+            setFormState({...formState, logo: refGetImage})
+            const url = refGetImage
+
+            const formCompanyRef = {
+                sid: sid,
+                name: name,
+                businesName: businesName,
+                nit: nit,
+                employees: employees,
+                pending: pending,
+                approved: approved,
+                rejected: rejected,
+                logo: url,
+            }
+
+            try {
+                const docRef = await addDoc(collection(db, "company"),formCompanyRef);
+                docRef.id && setLoader(false)
+                console.log("Document written with ID: ", docRef.id);
+                setFormState(
+                    { sid:0, name: '', businesName: '', nit: '', employees:0, pending: true, approved:false, rejected:false, logo:''}
+                    )
+                history.push('/admin')
+                setChange(change + 1)
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+
+            console.log(formCompanyRef)
+
         }
 
         // Colocarle un nombbre unico al logo
-        const fileNewName = uniqid(`${file.name}-`)
-        console.log(fileNewName)
         setLoader(true)
-
-        uploadFiles(file, fileNewName)
-        console.log('Termine de cargar la imagen')
-
-        const companyRef = {
-            sid: sid,
-            name: name,
-            businesName: businesName,
-            nit: nit,
-            employees: employees,
-            pending: pending,
-            approved: approved,
-            rejected: rejected,
-            logo: fileNewName,
-
-        }
-        console.log( companyRef )
-        try {
-            const docRef = await addDoc(collection(db, "company"),companyRef);
-            docRef.id && setLoader(false)
-            console.log("Document written with ID: ", docRef.id);
-            setFormState(
-                { sid:0, name: '', businesName: '', nit: '', employees:0, pending: true, approved:false, rejected:false, logo:''}
-                )
-            history.push('/prevalentware/admin')
-            setChange(change + 1)
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
+            const fileNewName = uniqid(`${file.name}-`)
+            test(file, fileNewName)
     }
 
 

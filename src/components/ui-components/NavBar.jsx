@@ -35,7 +35,7 @@ const ContentItemDropResponsiveMenu = tw.div`flex flex-col mt-5`
 const ContentItemResponsiveMenu = tw.div`flex items-center mt-5`
 
 
-const NavBar = ({pendingCompany} ) => {
+const NavBar = ({countCompany} ) => {
 
     // Estado para ocultar menu responsivo
     const [toggleState, setToggleState] = React.useState(false)
@@ -109,7 +109,7 @@ const NavBar = ({pendingCompany} ) => {
                 <ColumnRight>
                     <div className='hidden mdNav:flex items-center mr-10'>
                         <ImgItemMenu src={iconAdmin} alt='iconAdmin' />
-                        <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion <span className='absolute ml-1 -mt-2 p-0.5 rounded-full bg-red-500 text-white text-xs'>{pendingCompany}</span></Link>
+                        <Link onClick={ hiddeMenuResponsive } to='/admin'>Administracion <span className='absolute ml-1 -mt-2 p-0.5 rounded-full bg-red-500 text-white text-xs'>{countCompany}</span></Link>
                     </div>
 
                     {/* Menu Superior desplegable <Empleo> */}

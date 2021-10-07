@@ -22,43 +22,43 @@ import CreateCompanyPage from './pages/CreateCompanyPage';
 const MainRouter = () => {
     console.log('Ejecutanto Main router')
 
-    const [pendingCompany, setPendingCompany] = React.useState(0)
-    const [companyState, setCompanyState] = React.useState([])
+    const [listCompanyState, setListCompanyState] = React.useState([])
     const [change, setChange] = React.useState(1)
 
-        useEffect((change) => {
-            const getData = async() => {
-                const data = await getDocs(collection(db, 'company'))
-                const refListData = []
-                data.forEach( (document) => {
-                    const RefCompany = {
-                        key: document.id,
-                        approved: document.data().approved,
-                        businesName: document.data().businesName,
-                        employees: document.data().employees,
-                        name: document.data().name,
-                        nit: document.data().nit,
-                        pending: document.data().pending,
-                        rejected: document.data().rejected,
-                        sid: document.data().sid,
-                        logo: document.data().logo,
+    // Recibir la lista de companias registradas
+    useEffect(() => {
+        const getDataFirebase = async() => {
+            const data = await getDocs(collection(db, 'company'))
+            const refListCompany = []
+            data.forEach( document =>{
+                const refCompany = {
+                    key: document.id,
+                    approved: document.data().approved,
+                    businesName: document.data().businesName,
+                    employees: document.data().employees,
+                    name: document.data().name,
+                    nit: document.data().nit,
+                    pending: document.data().pending,
+                    rejected: document.data().rejected,
+                    sid: document.data().sid,
+                    logo: document.data().logo,
                 }
-                refListData.push(RefCompany)
-            } )
-            setCompanyState(refListData)
-            setPendingCompany(refListData.length)
+                refListCompany.push(refCompany)
+            })
+            setListCompanyState(refListCompany)
+            console.log(listCompanyState)
         }
-        getData();
-    },[change])
+        getDataFirebase()
+    }, [change])
 
     return (
         <Router basename='/prevalentware'>
             <>
-                <NavBar pendingCompany={ pendingCompany } />
+                <NavBar countCompany={ listCompanyState.length } />
                 <Switch>
-                    <Route exact path='/'  component={ MainPage }></Route>
+                    <Route exact path='/' component={ MainPage }></Route>
                     <Route exact path='/admin'>
-                        <AdminPage companyState={companyState} change={change}  setChange={setChange} />
+                        <AdminPage listCompanyState={listCompanyState} change={change}  setChange={setChange} />
                     </Route>
                     <Route path='/create-company'>
                         <CreateCompanyPage change={change} setChange={setChange} />
