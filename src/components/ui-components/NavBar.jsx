@@ -119,12 +119,14 @@ const NavBar = ({countCompany} ) => {
                             <p href="#aa">Empleo</p>
                             <IconDropMenu onClick={ handleDropMenu } src={iconArrow} id='dropJobMenu' alt='iconArrow' />   
                         </div>
-
-                        <div className={`${ dropJobMenu ? 'flex flex-col' : 'hidden'} bg-navColor px-5 absolute mt-8`}>
-                            <a  className='py-2' href="#aa">Empleo 1</a>
-                            <a  className='py-2' href="#aa">Empleo 2</a>
-                            <a  className='py-2' href="#aa">Empleo 3</a>
-                        </div>
+                        {
+                            dropJobMenu &&
+                            <div className={`hidden mdNav:flex mdNav:flex-col bg-navColor px-5 absolute mt-8`}>
+                                <a  className='py-2' href="#aa">Empleo 1</a>
+                                <a  className='py-2' href="#aa">Empleo 2</a>
+                                <a  className='py-2' href="#aa">Empleo 3</a>
+                            </div>
+                        }
                     </ContentDropMenu>
 
 
@@ -142,11 +144,14 @@ const NavBar = ({countCompany} ) => {
                         </div>
 
                         {/* Menu desplegable  */}
-                        <div className={`${ dropProfileMenu ? 'flex flex-col' : 'hidden'} bg-navColor px-5 absolute mt-8`}>
+                        {
+                            dropProfileMenu &&
+                        <div className={`hidden mdNav:flex mdNav:flex-col bg-navColor px-5 absolute mt-8`}>
                             <a  className='py-2' href="#aa">Perfil 1</a>
                             <a  className='py-2' href="#aa">Perfil 2</a>
                             <a  className='py-2' href="#aa">Perfil 3</a>
                         </div>
+                        }
                     </ContentDropMenu>
 
 

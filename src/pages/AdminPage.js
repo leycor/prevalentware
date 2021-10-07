@@ -31,6 +31,16 @@ const AdminPage = ({listCompanyState, change, setChange}) => {
 
     const [paginator, setPaginator] = React.useState(0)
     const [loader, setLoader] = React.useState(false)
+    const [modal, setModal] = React.useState(false)
+
+    const handleClickModal = () => {
+        console.log('Muestrame el modal')
+        setModal(true)
+    }
+
+    const handleCloseModal = () => {
+        setModal(false)
+    }
 
     // Funcion que actualiza el estado de una empresa
     const handleChangeState = async(e) => {
@@ -167,9 +177,9 @@ const AdminPage = ({listCompanyState, change, setChange}) => {
                             </BoxContentCompany>
 
                             <div>
-                                <div className='mb-10 sr-onlyhidden mdNav:flex items-center p-3 bg-white shadow rounded-md w-2/3'>
+                                <div onClick={handleClickModal} className='mb-10 cursor-pointer  mdNav:flex items-center p-3 bg-white shadow rounded-md w-2/3'>
                                     <ImgButtonAdminPage src={iconUploadFile} alt='iconUploadFile'  />
-                                    <TextButtonAdminPage>Ver archivos adjuntos</TextButtonAdminPage>
+                                    <TextButtonAdminPage >Ver archivos adjuntos</TextButtonAdminPage>
                                 </div>
                             </div>
 
@@ -213,6 +223,24 @@ const AdminPage = ({listCompanyState, change, setChange}) => {
                         }
                     </div>
                 </GridAdminPage>
+                {
+                    modal &&
+                    <div className='hidden mdNav:flex mdNav:flex-col px-10 py-10 bg-white border border-gray-200 shadow-md rounded-lg absolute m-auto inset-0 w-1/3 h-2/4'>
+                        <div className='flex justify-between'>
+                            <p className='text-center'>Documentos cargados</p>
+                            <p onClick={handleCloseModal} className='cursor-pointer'>X</p>
+                        </div>
+                        <div className='mt-8 flex items-center justify-center'>
+                            <p className='mr-10'>Nombre del documento</p>
+                            <img className='h-8 w-8' src={iconFile} alt='Nombre de documento'></img>
+                        </div>
+                        <div className='mt-8 flex items-center justify-center'>
+                            <p className='mr-10'>Nombre del documento</p>
+                            <img className='h-8 w-8' src={iconFile} alt='Nombre de documento'></img>
+                        </div>
+                    </div>
+                }
+
             </ContentPage>
         }
         </>
