@@ -238,7 +238,7 @@ const AdminPage = ({listCompanyState, change, setChange}) => {
                         <p onClick={handleCloseModal} className='ml-auto mr-4 mt-3 cursor-pointer'>X</p>
                         <p className='text-center text-2xl font-medium'>Documentos cargados</p>
 
-                        <div className='mt-8 grid grid-cols gap-4 px-10 overflow-scroll'>
+                        <div className='mt-8 grid grid-cols gap-4 px-10 overflow-y-auto'>
                             {
                                 documentModal.map( document => (
                                     <div className='flex justify-between' key={document.id}>
